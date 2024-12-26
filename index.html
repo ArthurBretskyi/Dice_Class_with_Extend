@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Dice</title>
+  </head>
+  <body>
+    <h1>Dice</h1>
+    <p>
+      Задача 1. Створити клас Dice, який представляє гральний кубик (одне поле
+      faceCount - кліькістьграней) і дозволяє генерувати випадкове число від 1
+      до кількості граней. Потім на основі цього класу створити клас , який
+      дозволяє вказати не тільки кількість граней, а й кількість спроб -
+      attemptCount (при цьому як випадкове число повертається середнє значення).
+    </p>
+    <script>
+      class Dice {
+        constructor(facesNumber = 6) {
+          this.facesNumber = facesNumber;
+        }
+        getScore() {
+          return 1 + Math.floor(Math.random() * this.facesNumber);
+        }
+      }
+      const firstDice = new Dice();
+      console.log(firstDice.getScore());
+
+      class superDice extends Dice {
+        constructor(facesNumber, attemptCount) {
+          super(facesNumber);
+          this.attemptCount = attemptCount;
+        }
+        getScore() {
+          const res = document.querySelector(".result-value");
+
+          let sum = 0;
+          for (let i = 0; i < this.attemptCount; i++) {
+            sum += super.getScore();
+            console.log(super.getScore());
+          }
+          let result = sum / this.attemptCount;
+          console.log(result);
+          res.innerText = result;
+        }
+        render() {
+          const container = document.createElement("div");
+
+          const btn = document.createElement("button");
+          btn.innerText = "Get Score";
+          btn.onclick = this.getScore.bind(this);
+          container.append(btn);
+
+          const result = document.createElement("div");
+          result.innerText = "Your Score Is: ";
+          const resultValue = document.createElement("span");
+          resultValue.className = "result-value";
+          result.append(resultValue);
+          container.append(result);
+
+          document.body.append(container);
+        }
+      }
+      const firstSuperDice = new superDice(6, 3);
+      firstSuperDice.render();
+    </script>
+  </body>
+</html>
